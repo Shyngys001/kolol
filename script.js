@@ -856,20 +856,36 @@ function toggleFavorite(productId) {
 }
 
 // Оформление заказа через WhatsApp
+// Оформление заказа через WhatsApp
 function checkout() {
   if (state.cart.length === 0) return;
-  
+
   const phone = '77479894879';
-  let message = 'Здравствуйте! Я хочу заказать:%0A%0A';
-  
-  state.cart.forEach(item => {
-    message += `- ${item.name} (Размер: ${item.size}) - ${item.quantity} шт. × ${item.price} ₸%0A`;
+  // Собираем заголовок и приветствие
+  let text = '*🛒 Новый заказ с MonnaRosa.kz*\n\n';
+  text += 'Здравствуйте! Выгодно оформлю заказ по следующим позициям:\n\n';
+
+  // Список товаров
+  state.cart.forEach((item, i) => {
+    text += `${i + 1}. *${item.name}*\n`;
+    text += `   Размер: _${item.size}_\n`;
+    text += `   Кол-во: *${item.quantity}* шт.\n`;
+    text += `   Цена: *${item.price.toLocaleString()} ₸*\n\n`;
   });
-  
-  const total = state.cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-  message += `%0AИтого: ${total} ₸%0A%0AСпасибо!`;
-  
-  window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
+
+  // Общая сумма
+  const total = state.cart
+    .reduce((sum, item) => sum + item.price * item.quantity, 0)
+    .toLocaleString();
+  text += `*Итого:* _${total} ₸_\n\n`;
+
+  text += '📍 Доставка: [укажите адрес]\n';
+  text += '📞 Контакт: [ваш телефон]\n\n';
+  text += 'Спасибо за ваш выбор!';
+
+  // Кодируем и открываем окно WhatsApp
+  const encoded = encodeURIComponent(text);
+  window.open(`https://wa.me/${phone}?text=${encoded}`, '_blank');
 }
 
 // Рендер корзины
