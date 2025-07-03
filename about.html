@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>О компании - MonnaRosa.kz</title>
+    <style>
+        /* Основные стили */
+        :root {
+            --primary-bg: #FFFFFF;
+            --accent-pink: #F8E1E7;
+            --text-dark: #222222;
+            --secondary-bg: #F5F5F5;
+            --sale-badge: #ce796b;
+            --shadow: 0 2px 8px rgba(0,0,0,0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            color: var(--text-dark);
+            background-color: var(--primary-bg);
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 16px;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        /* Шапка */
+        .header {
+            background-color: var(--primary-bg);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+        }
+
+        .logo {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .nav-list {
+            display: flex;
+            gap: 24px;
+        }
+
+        .nav-list a {
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .nav-list a:hover {
+            color: #d94a7a;
+        }
+
+        .nav-list a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--accent-pink);
+            transition: var(--transition);
+        }
+
+        .nav-list a:hover::after {
+            width: 100%;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+        }
+
+        .btn-menu {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        /* Герой-баннер */
+        .hero-about {
+            background: linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.8)), 
+                        url('https://images.unsplash.com/photo-1590005024862-6b67679a29fb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80');
+            background-size: cover;
+            background-position: center;
+            padding: 100px 0;
+            text-align: center;
+        }
+
+        .hero-about h1 {
+            font-size: 48px;
+            margin-bottom: 16px;
+            color: #d94a7a;
+        }
+
+        /* О компании */
+        .about-section {
+            padding: 80px 0;
+            background-color: var(--secondary-bg);
+        }
+
+        .about-section .container {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .about-content {
+            flex: 1;
+        }
+
+        .about-content h2 {
+            margin-bottom: 24px;
+            font-size: 32px;
+        }
+
+        .about-content p {
+            margin-bottom: 24px;
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
+        .about-image {
+            flex: 1;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .about-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .features {
+            display: flex;
+            gap: 24px;
+            margin-top: 32px;
+            flex-wrap: wrap;
+        }
+
+        .feature {
+            text-align: center;
+            flex: 1;
+            min-width: 200px;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+        }
+
+        .feature-icon {
+            width: 70px;
+            height: 70px;
+            background-color: var(--accent-pink);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        /* Команда */
+        .team-section {
+            padding: 80px 0;
+            background-color: white;
+        }
+
+        .team-section h2 {
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 32px;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .team-member {
+            text-align: center;
+        }
+
+        .member-photo {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin: 0 auto 20px;
+            border: 5px solid var(--accent-pink);
+        }
+
+        .member-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Галерея */
+        .gallery-section {
+            padding: 80px 0;
+            background-color: var(--secondary-bg);
+        }
+
+        .gallery-section h2 {
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 32px;
+        }
+
+        .instagram-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .gallery-item {
+            height: 250px;
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .instagram-link {
+            display: block;
+            text-align: center;
+            margin-top: 30px;
+            font-size: 18px;
+            color: #d94a7a;
+            font-weight: 500;
+        }
+
+        /* Контакты */
+        .contacts {
+            padding: 80px 0;
+            background-color: white;
+        }
+
+        .contacts .container {
+            display: flex;
+            gap: 40px;
+        }
+
+        .contacts-info {
+            flex: 1;
+        }
+
+        .contacts-info h2 {
+            margin-bottom: 24px;
+            font-size: 32px;
+        }
+
+        .contacts-info p {
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 18px;
+        }
+
+        .contacts-map {
+            flex: 1;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            height: 400px;
+        }
+
+        .contacts-map iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Подвал */
+        .footer {
+            background-color: var(--text-dark);
+            color: white;
+            padding: 60px 0 0;
+        }
+
+        .footer-columns {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-column h3 {
+            margin-bottom: 16px;
+            font-size: 20px;
+            color: white;
+        }
+
+        .footer-column p {
+            margin-bottom: 8px;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 8px;
+        }
+
+        .footer-column ul li a:hover {
+            color: var(--accent-pink);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .social-links a:hover {
+            background-color: var(--accent-pink);
+            color: var(--text-dark);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding: 20px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 14px;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .nav {
+                display: none;
+                position: fixed;
+                top: 70px;
+                left: 0;
+                width: 100%;
+                background-color: white;
+                padding: 20px;
+                box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+                z-index: 99;
+            }
+            
+            .nav.active {
+                display: block;
+            }
+            
+            .nav-list {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .btn-menu {
+                display: block;
+            }
+            
+            .hero-about {
+                padding: 60px 0;
+            }
+            
+            .hero-about h1 {
+                font-size: 36px;
+            }
+            
+            .about-section .container,
+            .contacts .container {
+                flex-direction: column;
+            }
+            
+            .about-image {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .features {
+                flex-direction: column;
+            }
+            
+            .hero-about h1 {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Шапка сайта -->
+    <header class="header">
+        <div class="container">
+            <a href="index.html" class="logo">MonnaRosa</a>
+            <nav class="nav">
+                <ul class="nav-list">
+                    <li><a href="index.html">Главная</a></li>
+                    <li><a href="catalog.html">Каталог</a></li>
+                    <li><a href="about.html" class="active">О компании</a></li>
+                    <li><a href="index.html#contacts">Контакты</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <button class="btn-icon" id="favorites-btn">
+                    <i class="fas fa-heart"></i>
+                    <span class="count" id="favorites-count">0</span>
+                </button>
+                <button class="btn-icon" id="cart-btn">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="count" id="cart-count">0</span>
+                </button>
+                <button class="btn-menu" id="menu-btn">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Главный баннер страницы "О нас" -->
+    <section class="hero-about">
+        <div class="container">
+            <h1>О компании MonnaRosa</h1>
+            <p>Прививаем стиль с детства</p>
+        </div>
+    </section>
+
+    <!-- О компании -->
+    <section class="about-section">
+        <div class="container">
+            <div class="about-content">
+                <h2>О бренде MonnaRosa</h2>
+                <p>MonnaRosa — это роскошная детская одежда премиум-класса для детей от 0 до 10 лет. Мы создаем коллекции, сочетающие в себе качество, стиль и элегантность. Каждая вещь создана с любовью и вниманием к деталям, чтобы ваш ребенок чувствовал себя особенным.</p>
+                <p>Мы являемся официальными представителями ведущих брендов детской одежды и предлагаем только лучшие товары для ваших малышей. Наша миссия — прививать вкус и стиль с самого детства, создавая неповторимые образы для ваших детей.</p>
+                
+                <div class="features">
+                    <div class="feature">
+                        <div class="feature-icon">0-10</div>
+                        <h3>Для детей 0-10 лет</h3>
+                        <p>Широкий ассортимент для всех возрастов</p>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon">2</div>
+                        <h3>2 коллекции в год</h3>
+                        <p>Сезонные новинки и актуальные тренды</p>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon">🇹🇷</div>
+                        <h3>Производство: Турция</h3>
+                        <p>Качественные материалы и пошив</p>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon">🎁</div>
+                        <h3>Подарочные сертификаты</h3>
+                        <p>Идеальный подарок для близких</p>
+                    </div>
+                </div>
+            </div>
+            <div class="about-image">
+                <img src="https://images.unsplash.com/photo-1558769132-cb1aea458c5e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80" alt="Одежда MonnaRosa">
+            </div>
+        </div>
+    </section>
+
+    <!-- Галерея Instagram -->
+    <section class="gallery-section">
+        <div class="container">
+            <h2>Наши работы в Instagram</h2>
+            <div class="instagram-gallery">
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1576566588028-4147f3842f27?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1064&q=80" alt="Детская одежда">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1588117305388-c2631a279f82?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80" alt="Нарядные платья">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1604917018616-909d9f3d05a2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80" alt="Мальчики">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1552374196-c4e7ffc6e126?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80" alt="Обувь">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1571941807880-9a3aef58a0d4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80" alt="Летняя коллекция">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1604917018616-909d9f3d05a2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80" alt="Аксессуары">
+                </div>
+            </div>
+            <a href="https://www.instagram.com/monnarosa_kz/" class="instagram-link" target="_blank">
+                Подписывайтесь на нас в Instagram → @monnarosa_kz
+            </a>
+        </div>
+    </section>
+
+    <!-- Контакты -->
+    <section class="contacts">
+        <div class="container">
+            <div class="contacts-info">
+                <h2>Наши контакты</h2>
+                <p><i class="fas fa-map-marker-alt"></i> ТРЦ Forum, г. Алматы, 4 этаж</p>
+                <p><i class="fas fa-phone"></i> +7 (747) 989-48-79</p>
+                <p><i class="fas fa-phone"></i> +7 (702) 007-22-68</p>
+                <p><i class="fas fa-clock"></i> Ежедневно: 10:00 - 22:00</p>
+                <p><i class="fas fa-truck"></i> Доставка по Алматы и всему Казахстану</p>
+                
+                <div class="social-links" style="margin-top: 30px;">
+                    <a href="https://www.instagram.com/monnarosa_kz/" target="_blank"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-whatsapp"></i></a>
+                </div>
+            </div>
+            <div class="contacts-map">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2906.776949826709!2d76.879097315484!3d43.2344821791378!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3883692f027685ad%3A0x2426740f56437e63!2sForum%20Almaty!5e0!3m2!1sen!2skz!4v1650000000000!5m2!1sen!2skz" allowfullscreen="" loading="lazy"></iframe>
+            </div>
+        </div>
+    </section>
+
+    <!-- Подвал -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-columns">
+                <div class="footer-column">
+                    <h3>MonnaRosa</h3>
+                    <p>Роскошная детская одежда и обувь для ваших малышей</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Меню</h3>
+                    <ul>
+                        <li><a href="index.html">Главная</a></li>
+                        <li><a href="catalog.html">Каталог</a></li>
+                        <li><a href="about.html">О нас</a></li>
+                        <li><a href="index.html#contacts">Контакты</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Контакты</h3>
+                    <p>ТРЦ Forum, г. Алматы</p>
+                    <p>+7 (747) 989-48-79</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Соцсети</h3>
+                    <div class="social-links">
+                        <a href="https://www.instagram.com/monnarosa_kz/" target="_blank"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 MonnaRosa.kz. Все права защищены.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Обработка меню для мобильных устройств
+        document.getElementById('menu-btn').addEventListener('click', function() {
+            document.querySelector('.nav').classList.toggle('active');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MonnaRosa.kz - Детская одежда премиум класса</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <!-- Шапка сайта -->
+    <header class="header">
+        <div class="container">
+            <a href="#" class="logo">MonnaRosa</a>
+            <nav class="nav">
+                <ul class="nav-list">
+                  <li><a href="index.html">Главная</a></li>
+                  <li><a href="catalog.html">Каталог</a></li>
+                  <li><a href="index.html#about">О компании</a></li>
+                  <li><a href="index.html#contacts">Контакты</a></li>
+                </ul>
+              </nav>
+            <div class="header-actions">
+                <input type="search" id="search-input" placeholder="Поиск товара…" />
+
+                <button class="btn-icon" id="favorites-btn">
+                    <i class="fas fa-heart"></i>
+                    <span class="count" id="favorites-count">0</span>
+                </button>
+                <button class="btn-icon" id="cart-btn">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="count" id="cart-count">0</span>
+                </button>
+                <button class="btn-menu" id="menu-btn">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Главный баннер -->
+    <section class="hero">
+        <div class="container">
+            <h1>Роскошная одежда для детей</h1>
+            <p>Качество, стиль и элегантность для ваших малышей</p>
+            <a href="catalog.html" class="btn-primary">Смотреть коллекцию</a>
+        </div>
+    </section>
+
+    <!-- Каталог товаров -->
+    <section class="categories" id="categories">
+        <div class="container">
+          <h2>Категории</h2>
+          <div class="categories-grid" id="categories-container">
+            <!-- Здесь renderCategories() подставит только карточки категорий -->
+          </div>
+        </div>
+      </section>
+
+    <!-- О компании -->
+    <section class="about" id="about">
+        <div class="container">
+            <div class="about-content">
+                <h2>О бренде MonnaRosa</h2>
+                <p>Роскошная одежда для детей от 0 до 10 лет, сочетающая в себе качество, стиль и элегантность. Каждая вещь создана с любовью и вниманием к деталям.</p>
+                
+                <div class="features">
+                    <div class="feature">
+                        <div class="feature-icon">0-10</div>
+                        <p>Для детей 0-10 лет</p>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon">2</div>
+                        <p>2 коллекции в год</p>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon">🇹🇷</div>
+                        <p>Производство: Турция</p>
+                    </div>
+                </div>
+            </div>
+            <div class="about-image">
+                <img src="https://www.wed2b.com/media/catalog/product/p/e/perrie-flowergirl-dresses-front-infinite.jpg?optimize=high&fit=bounds&height=1800&width=1400&canvas=1400:1800" alt="Одежда MonnaRosa">
+            </div>
+        </div>
+    </section>
+
+    <!-- Контакты -->
+    <section class="contacts" id="contacts">
+        <div class="container">
+            <div class="contacts-info">
+                <h2>Контакты</h2>
+                <p><i class="fas fa-map-marker-alt"></i> ТРЦ Forum, г. Алматы</p>
+                <p><i class="fas fa-phone"></i> +7 (747) 989-48-79</p>
+                <p><i class="fas fa-clock"></i> Ежедневно: 10:00 - 22:00</p>
+                
+                <form class="contact-form">
+                    <h3>Обратная связь</h3>
+                    <input type="text" placeholder="Ваше имя" required>
+                    <input type="tel" placeholder="Телефон" required>
+                    <input type="email" placeholder="Email">
+                    <textarea placeholder="Сообщение"></textarea>
+                    <button type="submit" class="btn-primary">Отправить</button>
+                </form>
+            </div>
+            <div class="contacts-map">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2906.776949826709!2d76.879097315484!3d43.2344821791378!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3883692f027685ad%3A0x2426740f56437e63!2sForum%20Almaty!5e0!3m2!1sen!2skz!4v1650000000000!5m2!1sen!2skz" allowfullscreen="" loading="lazy"></iframe>
+            </div>
+        </div>
+    </section>
+
+    <!-- Подвал -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-columns">
+                <div class="footer-column">
+                    <h3>MonnaRosa</h3>
+                    <p>Роскошная детская одежда и обувь для ваших малышей</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Меню</h3>
+                    <ul>
+                        <li><a href="#">Главная</a></li>
+                        <li><a href="catalog.html">Каталог</a></li>
+                        <li><a href="#about">О нас</a></li>
+                        <li><a href="#contacts">Контакты</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Контакты</h3>
+                    <p>ТРЦ Forum, г. Алматы</p>
+                    <p>+7 (747) 989-48-79</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Соцсети</h3>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 MonnaRosa.kz. Все права защищены.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Модальное окно товара -->
+    <div class="modal" id="product-modal">
+        <div class="modal-content">
+            <button class="modal-close">&times;</button>
+            <div class="modal-body" id="modal-body">
+                <!-- Контент загружается динамически -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Боковая панель корзины -->
+    <div class="cart-drawer" id="cart-drawer">
+        <div class="cart-header">
+            <h2>Корзина</h2>
+            <button class="btn-close" id="close-cart">&times;</button>
+        </div>
+        <div class="cart-body" id="cart-items">
+            <!-- Товары в корзине -->
+        </div>
+        <div class="cart-footer">
+            <p>Итого: <span id="cart-total">0</span> ₸</p>
+            <button class="btn-primary" id="checkout-btn">Оформить в WhatsApp</button>
+        </div>
+    </div>
+
+    <!-- Панель Избранного -->
+    <div class="favorites-drawer" id="favorites-drawer">
+        <div class="drawer-header">
+        <h2>Избранное</h2>
+        <button class="btn-close" id="close-favorites">&times;</button>
+        </div>
+        <div class="drawer-body" id="favorites-items">
+        <!-- Сюда JS вставит избранные товары -->
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

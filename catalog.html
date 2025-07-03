@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>MonnaRosa — Каталог</title>
+  <link rel="stylesheet" href="style.css" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&family=Roboto:wght@400;500&display=swap"
+    rel="stylesheet"
+  />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+  />
+</head>
+<body>
+  <!-- шапка -->
+  <header class="header">
+    <div class="container">
+      <a href="index.html" class="logo">MonnaRosa</a>
+      <nav class="nav">
+        <ul class="nav-list">
+          <li><a href="index.html">Главная</a></li>
+          <li><a href="catalog.html" class="active">Каталог</a></li>
+          <li><a href="index.html#about">О компании</a></li>
+          <li><a href="index.html#contacts">Контакты</a></li>
+        </ul>
+      </nav>
+      <div class="header-actions">
+        <input type="search" id="search-input" placeholder="Поиск товаров…" />
+        <button class="btn-icon" id="favorites-btn">
+          <i class="fas fa-heart"></i>
+          <span class="count" id="favorites-count">0</span>
+        </button>
+        <button class="btn-icon" id="cart-btn">
+          <i class="fas fa-shopping-cart"></i>
+          <span class="count" id="cart-count">0</span>
+        </button>
+        <button class="btn-menu" id="menu-btn">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- каталог -->
+  <section class="catalog" id="catalog">
+    <div class="container">
+      <h2>Каталог товаров</h2>
+
+      <!-- фильтры -->
+      <div class="filters">
+        <select id="category-filter">
+          <option value="all">Все категории</option>
+        </select>
+        <select id="sort">
+          <option value="default">По умолчанию</option>
+          <option value="price-asc">Цена: по возрастанию</option>
+          <option value="price-desc">Цена: по убыванию</option>
+          <option value="sale">Скидки</option>
+        </select>
+      </div>
+
+      <!-- категории (карусель/тайлы) -->
+      <div id="categories-container" class="categories-grid"></div>
+
+      <!-- товары -->
+      <div id="products-container" class="products-grid"></div>
+    </div>
+  </section>
+
+  <!-- модалка товара -->
+  <div class="modal" id="product-modal">
+    <div class="modal-content">
+      <button class="modal-close">&times;</button>
+      <div class="modal-body" id="modal-body"></div>
+    </div>
+  </div>
+  
+  <!-- корзина -->
+  <div class="cart-drawer" id="cart-drawer">
+    <div class="cart-header">
+      <h2>Корзина</h2>
+      <button class="btn-close" id="close-cart">&times;</button>
+    </div>
+    <div class="cart-body" id="cart-items"></div>
+    <div class="cart-footer">
+      <p>Итого: <span id="cart-total">0</span> ₸</p>
+      <button class="btn-primary" id="checkout-btn">Оформить в WhatsApp</button>
+    </div>
+  </div>
+
+  <!-- избранное -->
+  <div class="favorites-drawer" id="favorites-drawer">
+    <div class="drawer-header">
+      <h2>Избранное</h2>
+      <button class="btn-close" id="close-favorites">&times;</button>
+    </div>
+    <div class="drawer-body" id="favorites-items"></div>
+  </div>
+  
+  <!-- футер (скопирован с index.html) -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-columns">
+        <div class="footer-column">
+          <h3>MonnaRosa</h3>
+          <p>Роскошная детская одежда и обувь для ваших малышей</p>
+        </div>
+        <div class="footer-column">
+          <h3>Меню</h3>
+          <ul>
+            <li><a href="index.html">Главная</a></li>
+            <li><a href="catalog.html">Каталог</a></li>
+            <li><a href="index.html#about">О нас</a></li>
+            <li><a href="index.html#contacts">Контакты</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h3>Контакты</h3>
+          <p>ТРЦ Forum, г. Алматы</p>
+          <p>+7 (747) 989-48-79</p>
+        </div>
+        <div class="footer-column">
+          <h3>Соцсети</h3>
+          <div class="social-links">
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-whatsapp"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2023 MonnaRosa.kz. Все права защищены.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
