@@ -9,7 +9,9 @@ const state = {
   favorites: JSON.parse(localStorage.getItem('favorites')) || [],
   currentCategory: 'all',
   currentProduct: null,
-  searchTerm: ''
+  searchTerm: '',
+  currentPage: 1,
+  itemsPerPage: 5
 };
 
 // Ссылки на DOM-элементы
@@ -36,18 +38,18 @@ const elements = {
   favoritesDrawer: document.getElementById('favorites-drawer'),
   favoritesItems: document.getElementById('favorites-items'),
   closeFavorites: document.getElementById('close-favorites'),
+  paginationContainer: document.getElementById('pagination-container'),
 };
 
 // Преобразуем Drive-ссылку в прямую картинку
 function normalizeDriveUrl(url) {
   if (!url) return '';
   
-  // Обрабатываем все форматы ссылок Google Drive
   const patterns = [
       /\/d\/([a-zA-Z0-9_-]+)/,
       /\/file\/d\/([a-zA-Z0-9_-]+)/,
       /id=([a-zA-Z0-9_-]+)/,
-      /[a-zA-Z0-9_-]{25,}/  // Ищем длинные ID напрямую
+      /[a-zA-Z0-9_-]{25,}/
   ];
   
   let id = null;
@@ -59,11 +61,10 @@ function normalizeDriveUrl(url) {
       }
   }
   
-  // Если нашли ID - формируем прямую ссылку на изображение
   return id ? `https://lh3.googleusercontent.com/d/${id}` : url;
 }
 
-// Загрузка и нормализация данных из Google Sheets
+// Загрузка данных из Google Sheets
 async function fetchData() {
   try {
     // Категории
@@ -100,9 +101,9 @@ async function fetchData() {
         if (cell) obj[prodJson.table.cols[i].label] = cell.v;
       });
       return {
-        id: String(obj.id || ''),               // <- явно строка
+        id: String(obj.id || ''),
         name: obj.name || 'Товар',
-        category_id: String(obj.category_id || ''), // <- тоже строка
+        category_id: String(obj.category_id || ''),
         description: obj.description || 'Описание отсутствует',
         price: obj.price ? parseFloat(obj.price) : 0,
         old_price: obj.old_price ? parseFloat(obj.old_price) : 0,
@@ -137,26 +138,51 @@ function renderCategories() {
   });
 }
 
-// Заполняем выпадающий список категорий
-function populateCategoryFilter() {
-  if (!elements.categoryFilter) return;
+// Рендер пагинации
+function renderPagination(totalPages) {
+  if (!elements.paginationContainer) return;
   
-  const sel = elements.categoryFilter;
-  sel.innerHTML = '<option value="all">Все категории</option>';
+  elements.paginationContainer.innerHTML = '';
   
-  state.categories.forEach(cat => {
-    const opt = document.createElement('option');
-    opt.value = cat.id;
-    opt.textContent = cat.name;
-    sel.appendChild(opt);
+  if (totalPages <= 1) return;
+  
+  // Кнопка "Назад"
+  const prevBtn = document.createElement('button');
+  prevBtn.className = 'pagination-btn';
+  prevBtn.innerHTML = '&laquo;';
+  prevBtn.disabled = state.currentPage === 1;
+  prevBtn.addEventListener('click', () => {
+    if (state.currentPage > 1) {
+      state.currentPage--;
+      renderProducts();
+    }
   });
+  elements.paginationContainer.appendChild(prevBtn);
   
-  // Устанавливаем текущую категорию из URL
-  const params = new URLSearchParams(window.location.search);
-  if (params.has('category')) {
-    state.currentCategory = params.get('category');
-    sel.value = state.currentCategory;
+  // Номера страниц
+  for (let i = 1; i <= totalPages; i++) {
+    const pageBtn = document.createElement('button');
+    pageBtn.className = `pagination-btn ${i === state.currentPage ? 'active' : ''}`;
+    pageBtn.textContent = i;
+    pageBtn.addEventListener('click', () => {
+      state.currentPage = i;
+      renderProducts();
+    });
+    elements.paginationContainer.appendChild(pageBtn);
   }
+  
+  // Кнопка "Вперед"
+  const nextBtn = document.createElement('button');
+  nextBtn.className = 'pagination-btn';
+  nextBtn.innerHTML = '&raquo;';
+  nextBtn.disabled = state.currentPage === totalPages;
+  nextBtn.addEventListener('click', () => {
+    if (state.currentPage < totalPages) {
+      state.currentPage++;
+      renderProducts();
+    }
+  });
+  elements.paginationContainer.appendChild(nextBtn);
 }
 
 // Рендер товаров в каталоге
@@ -188,15 +214,23 @@ function renderProducts() {
       return discountB - discountA;
     });
   }
+
+  // Рассчитываем пагинацию
+  const totalItems = items.length;
+  const totalPages = Math.ceil(totalItems / state.itemsPerPage);
+  const startIndex = (state.currentPage - 1) * state.itemsPerPage;
+  const endIndex = Math.min(startIndex + state.itemsPerPage, totalItems);
+  const itemsToRender = items.slice(startIndex, endIndex);
   
   // Если нет товаров
-  if (items.length === 0) {
+  if (itemsToRender.length === 0) {
     elements.productsContainer.innerHTML = '<p class="no-products">Товары не найдены</p>';
+    renderPagination(totalPages);
     return;
   }
   
-  // Рендер товаров
-  items.forEach(p => {
+  // Рендер товаров (ТОЛЬКО ДЛЯ ТЕКУЩЕЙ СТРАНИЦЫ)
+  itemsToRender.forEach(p => {
     const isFav = state.favorites.includes(p.id);
     const card = document.createElement('div');
     card.className = 'product-card';
@@ -221,6 +255,31 @@ function renderProducts() {
     `;
     elements.productsContainer.appendChild(card);
   });
+
+  // Рендерим пагинацию
+  renderPagination(totalPages);
+}
+
+// Заполняем выпадающий список категорий
+function populateCategoryFilter() {
+  if (!elements.categoryFilter) return;
+  
+  const sel = elements.categoryFilter;
+  sel.innerHTML = '<option value="all">Все категории</option>';
+  
+  state.categories.forEach(cat => {
+    const opt = document.createElement('option');
+    opt.value = cat.id;
+    opt.textContent = cat.name;
+    sel.appendChild(opt);
+  });
+  
+  // Устанавливаем текущую категорию из URL
+  const params = new URLSearchParams(window.location.search);
+  if (params.has('category')) {
+    state.currentCategory = params.get('category');
+    sel.value = state.currentCategory;
+  }
 }
 
 // Обновление счетчика корзины
@@ -300,16 +359,13 @@ function toggleFavorite(productId) {
 }
 
 // Оформление заказа через WhatsApp
-// Оформление заказа через WhatsApp
 function checkout() {
   if (state.cart.length === 0) return;
 
   const phone = '77479894879';
-  // Собираем заголовок и приветствие
   let text = '*🛒 Новый заказ с MonnaRosa.kz*\n\n';
   text += 'Здравствуйте! Выгодно оформлю заказ по следующим позициям:\n\n';
 
-  // Список товаров
   state.cart.forEach((item, i) => {
     text += `${i + 1}. *${item.name}*\n`;
     text += `   Размер: _${item.size}_\n`;
@@ -317,7 +373,6 @@ function checkout() {
     text += `   Цена: *${item.price.toLocaleString()} ₸*\n\n`;
   });
 
-  // Общая сумма
   const total = state.cart
     .reduce((sum, item) => sum + item.price * item.quantity, 0)
     .toLocaleString();
@@ -327,7 +382,6 @@ function checkout() {
   text += '📞 Контакт: [ваш телефон]\n\n';
   text += 'Спасибо за ваш выбор!';
 
-  // Кодируем и открываем окно WhatsApp
   const encoded = encodeURIComponent(text);
   window.open(`https://wa.me/${phone}?text=${encoded}`, '_blank');
 }
@@ -390,7 +444,6 @@ function renderFavorites() {
     const product = state.products.find(p => p.id === id);
     if (!product) return;
     
-    const isFav = state.favorites.includes(product.id);
     const favItem = document.createElement('div');
     favItem.className = 'favorite-item';
     favItem.innerHTML = `
@@ -530,19 +583,24 @@ function setupEventListeners() {
   if (elements.categoryFilter) {
     elements.categoryFilter.addEventListener('change', (e) => {
       state.currentCategory = e.target.value;
+      state.currentPage = 1;
       renderProducts();
     });
   }
   
   // Сортировка товаров
   if (elements.sortSelect) {
-    elements.sortSelect.addEventListener('change', renderProducts);
+    elements.sortSelect.addEventListener('change', () => {
+      state.currentPage = 1;
+      renderProducts();
+    });
   }
   
   // Поиск товаров
   if (elements.searchInput) {
     elements.searchInput.addEventListener('input', (e) => {
       state.searchTerm = e.target.value.toLowerCase();
+      state.currentPage = 1;
       renderProducts();
     });
   }
@@ -684,7 +742,14 @@ async function init() {
     `;
   }
   
-
+  if (elements.productsContainer) {
+    elements.productsContainer.innerHTML = `
+      <div class="data-placeholder">
+        <div class="loading-spinner"></div>
+        <p>Загрузка данных...</p>
+      </div>
+    `;
+  }
   
   // Загрузка данных
   const success = await fetchData();
@@ -741,6 +806,6 @@ document
       text += `*Телефон:* ${encodeURIComponent(phone)}%0A`;
       if (message) text += `%0A*Сообщение:* %0A${encodeURIComponent(message)}%0A`;
 
-      const phoneTo = '77479894879'; // номер менеджера
+      const phoneTo = '77479894879';
       window.open(`https://wa.me/${phoneTo}?text=${text}`, '_blank');
     });

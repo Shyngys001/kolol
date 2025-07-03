@@ -1037,3 +1037,40 @@ ul {
 @keyframes spin {
     to { transform: rotate(360deg); }
 }
+
+/* Стили для пагинации */
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+    gap: 5px;
+  }
+  
+  .pagination-btn {
+    width: 36px;
+    height: 36px;
+    border: 1px solid #e0e0e0;
+    background: #fff;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  
+  .pagination-btn:hover:not(:disabled) {
+    background: #f8f8f8;
+    border-color: #d0d0d0;
+  }
+  
+  .pagination-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  .pagination-btn.active {
+    background: #6a0dad;
+    color: white;
+    border-color: #6a0dad;
+  }
