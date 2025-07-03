@@ -1070,7 +1070,7 @@ ul {
   }
   
   .pagination-btn.active {
-    background: #6a0dad;
+    background:#ce796b;
     color: white;
-    border-color: #6a0dad;
+    border-color: #ce796b;
   }
