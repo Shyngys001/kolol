@@ -725,3 +725,22 @@ async function init() {
 
 // Запуск приложения
 document.addEventListener('DOMContentLoaded', init);
+
+
+document
+    .getElementById('contact-form')
+    .addEventListener('submit', function(e) {
+      e.preventDefault();
+      const name    = document.getElementById('cf-name').value.trim();
+      const phone   = document.getElementById('cf-phone').value.trim();
+      const email   = document.getElementById('cf-email').value.trim();
+      const message = document.getElementById('cf-message').value.trim();
+
+      let text = '*📩 Новая заявка MonnaRosa*%0A%0A';
+      text += `*Имя:* ${encodeURIComponent(name)}%0A`;
+      text += `*Телефон:* ${encodeURIComponent(phone)}%0A`;
+      if (message) text += `%0A*Сообщение:* %0A${encodeURIComponent(message)}%0A`;
+
+      const phoneTo = '77479894879'; // номер менеджера
+      window.open(`https://wa.me/${phoneTo}?text=${text}`, '_blank');
+    });

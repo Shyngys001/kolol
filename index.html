@@ -97,18 +97,24 @@
                 <p><i class="fas fa-phone"></i> +7‒702‒007‒22‒68</p>
                 <p><i class="fas fa-clock"></i> Ежедневно: 10:00 - 22:00</p>
                 
-                <form class="contact-form">
+                <form id="contact-form" class="contact-form">
                     <h3>Обратная связь</h3>
-                    <input type="text" placeholder="Ваше имя" required>
-                    <input type="tel" placeholder="Телефон" required>
-                    <input type="email" placeholder="Email">
-                    <textarea placeholder="Сообщение"></textarea>
+                    <input type="text" id="cf-name" placeholder="Ваше имя" required>
+                    <input type="tel" id="cf-phone" placeholder="Телефон" required>
+                    <textarea id="cf-message" placeholder="Сообщение"></textarea>
                     <button type="submit" class="btn-primary">Отправить</button>
-                </form>
+                  </form>
             </div>
             <div class="contacts-map">
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2906.776949826709!2d76.879097315484!3d43.2344821791378!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3883692f027685ad%3A0x2426740f56437e63!2sForum%20Almaty!5e0!3m2!1sen!2skz!4v1650000000000!5m2!1sen!2skz" allowfullscreen="" loading="lazy"></iframe>
-            </div>
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d25135932.88997517!2d31.83466473698213!3d39.73176163482165!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38836f6eed7aa93d%3A0xaf277b6548731ded!2sForum%20Almaty!5e0!3m2!1sen!2skz!4v1751556655229!5m2!1sen!2skz"
+                  width="100%"
+                  height="450"
+                  style="border:0;"
+                  allowfullscreen=""
+                  loading="lazy">
+                </iframe>
+              </div>
         </div>
     </section>
 
@@ -131,14 +137,28 @@
                 </div>
                 <div class="footer-column">
                     <h3>Контакты</h3>
-                    <p>ТРЦ Forum, г. Алматы</p>
-                    <p>+7‒702‒007‒22‒68</p>
-                </div>
+                    <p>
+                      <i class="fas fa-map-marker-alt"></i>
+                      <a 
+                        href="https://go.2gis.com/DWXJU" 
+                        target="_blank" 
+                        rel="noopener"
+                        style="color: inherit; text-decoration: none;"
+                      >
+                        ТРЦ Forum, г. Алматы
+                      </a>
+                    </p>
+                    <p>
+                      <i class="fas fa-phone"></i>
+                      <a href="tel:+77020072268" style="color: inherit; text-decoration: none;">
+                        +7 702 007 22 68
+                      </a>
+                    </p>
+                  </div>
                 <div class="footer-column">
                     <h3>Соцсети</h3>
                     <div class="social-links">
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="https://www.instagram.com/monnarosa_kz/"><i class="fab fa-instagram"></i></a>
                         <a href="https://wa.me/77020072268"><i class="fab fa-whatsapp"></i></a>
                     </div>
                 </div>
