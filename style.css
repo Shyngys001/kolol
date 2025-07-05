@@ -270,7 +270,7 @@ ul {
 
 .product-image {
     position: relative;
-    height: 280px;
+    height: 380px;
     overflow: hidden;
 }
 
@@ -970,6 +970,7 @@ ul {
         grid-template-columns: 1fr;
     }
     
+    
     .filters {
         flex-direction: column;
     }
@@ -1077,3 +1078,57 @@ ul {
 
 
   
+  /* --------------- мобильная версия: 3 товара в ряд и компактные размеры --------------- */
+@media (max-width: 768px) {
+    /* три колонки вместо двух */
+    .products-grid {
+      grid-template-columns: repeat(2, 1fr) !important;
+      gap: 12px;
+    }
+  
+    /* сами карточки чуть потоньше и поменьше */
+    .product-card {
+      border-radius: 6px;
+      overflow: hidden;
+    }
+  
+    .product-image {
+      height: 160px; /* было 280px */
+    }
+  
+    .product-details {
+      padding: 12px;
+    }
+  
+    .product-title {
+      font-size: 10px; /* вместо 18px */
+      margin-bottom: 6px;
+    }
+  
+    .product-price .current-price,
+    .product-price .old-price {
+      font-size: 10px; /* вместо 18px/16px */
+    }
+  
+    /* sale-бейдж */
+    .sale-badge {
+      width: 28px;
+      height: 28px;
+      font-size: 12px;
+      top: 8px;
+      right: 8px;
+    }
+  
+    /* кнопки */
+    .btn-primary {
+      padding: 6px 12px;
+      font-size: 10px;
+      border-radius: 4px;
+    }
+  
+    .pagination-btn {
+      width: 28px;
+      height: 28px;
+      font-size: 12px;
+    }
+  }
