@@ -11,7 +11,7 @@ const state = {
   currentProduct: null,
   searchTerm: '',
   currentPage: 1,
-  itemsPerPage: 5
+  itemsPerPage: 6
 };
 
 // Ссылки на DOM-элементы
