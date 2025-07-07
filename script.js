@@ -371,24 +371,20 @@ function checkout() {
 
   const phone = '77020072268';
   let text = '*🛒 Новый заказ с MonnaRosa.kz*\n\n';
-  text += 'Здравствуйте! Выгодно оформлю заказ по следующим позициям:\n\n';
+  text += 'Здравствуйте! Хочу заказать: }:\n\n';
 
   state.cart.forEach((item, i) => {
     text += `${i + 1}. *${item.name}*\n`;
     text += `   Размер: _${item.size}_\n`;
     text += `   Кол-во: *${item.quantity}* шт.\n`;
     text += `   Цена: *${item.price.toLocaleString()} ₸*\n\n`;
-    text += `   Цвет: *${item.color.toLocaleString()} ₸*\n\n`;
+    text += `   Цвет: *${item.color.toLocaleString()}*\n\n`;
   });
 
   const total = state.cart
     .reduce((sum, item) => sum + item.price * item.quantity, 0)
     .toLocaleString();
   text += `*Итого:* _${total} ₸_\n\n`;
-
-  text += '📍 Доставка: [укажите адрес]\n';
-  text += '📞 Контакт: [ваш телефон]\n\n';
-  text += 'Спасибо за ваш выбор!';
 
   const encoded = encodeURIComponent(text);
   window.open(`https://wa.me/${phone}?text=${encoded}`, '_blank');
