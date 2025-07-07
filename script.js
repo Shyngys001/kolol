@@ -97,9 +97,9 @@ async function fetchData() {
     
     state.products = prodRows.map(row => {
       const obj = {};
-      row.c.forEach((cell, i) => {
-        if (cell) obj[prodJson.table.cols[i].label] = cell.v;
-      });
+       row.c.forEach((cell, i) => {
+         if (cell) obj[prodJson.table.cols[i].label] = cell.v;
+       });
       return {
         id: String(obj.id || ''),
         name: obj.name || 'Товар',
@@ -109,7 +109,13 @@ async function fetchData() {
         old_price: obj.old_price ? parseFloat(obj.old_price) : 0,
         image1: normalizeDriveUrl(obj.image_url1) || 'https://via.placeholder.com/400',
         image2: normalizeDriveUrl(obj.image_url2) || '',
-        image3: normalizeDriveUrl(obj.image_url3) || ''
+        image3: normalizeDriveUrl(obj.image_url3) || '',
+        sizes: obj.SIZE
+        ? obj.SIZE.toString().split(/\s+|,\s*/).filter(s=>s)
+        : [],
+        colors: obj.COLOR
+        ? obj.COLOR.toString().split(/\s+|,\s*/).filter(c=>c)
+        : []
       };
     });
     
@@ -296,24 +302,25 @@ function updateFavoritesCount() {
 }
 
 // Добавление в корзину
-function addToCart(productId, size = '86') {
-  const product = state.products.find(p => p.id == productId);
+function addToCart(productId, size = '', color = '') {
+  const product = state.products.find(p=>p.id==productId);
   if (!product) return;
   
-  const existingItemIndex = state.cart.findIndex(
-    item => item.id == productId && item.size == size
+  const existingItemIndex = state.cart.findIndex(item=>
+    item.id==productId && item.size==size && item.color==color
   );
   
   if (existingItemIndex !== -1) {
     state.cart[existingItemIndex].quantity += 1;
   } else {
     state.cart.push({
-      id: product.id,
-      name: product.name,
-      price: product.price,
-      image: product.image1,
-      size: size,
-      quantity: 1
+      id:product.id,
+      name:product.name,
+      price:product.price,
+      image:product.image1,
+      size:size,
+      color:color,
+      quantity:1
     });
   }
   
@@ -412,7 +419,7 @@ function renderCart() {
       <div class="cart-item-details">
         <h3 class="cart-item-title">${item.name}</h3>
         <p class="cart-item-price">${item.price} ₸ × ${item.quantity}</p>
-        <p class="cart-item-size">Размер: ${item.size}</p>
+        <p class="cart-item-size">Размер: ${item.size}, Цвет: ${item.color}</p>
         <div class="cart-item-actions">
           <button class="quantity-btn minus" data-index="${index}">-</button>
           <span>${item.quantity}</span>
@@ -497,14 +504,26 @@ function renderProductModal(productId) {
       </div>
       <p class="modal-description">${product.description || 'Премиальное качество для вашего ребенка'}</p>
       
-      <div class="modal-sizes">
+      ${product.sizes.length?`
+      
+        <div class="modal-sizes">
         <h4>Размеры:</h4>
         <div class="size-options">
-          ${['0-3 мес', '3-6 мес', '6-9 мес'].map(size => `
-            <div class="size-option" data-size="${size}">${size}</div>
+          ${product.sizes.map(s=>`
+            <div class="size-option" data-size="${s}">${s}</div>
           `).join('')}
         </div>
-      </div>
+      </div>`:``}
+
+      ${product.colors.length?`
+      <div class="modal-colors">
+        <h4>Цвета:</h4>
+        <div class="color-options">
+          ${product.colors.map(c=>`
+            <div class="color-option" data-color="${c}">${c}</div>
+          `).join('')}
+        </div>
+      </div>`:``}
       
       <div class="modal-actions">
         <button class="heart-btn ${isFavorite ? 'active' : ''}" data-id="${product.id}">
@@ -668,17 +687,27 @@ function setupEventListeners() {
     if (e.target.classList.contains('add-to-cart-modal')) {
       const btn = e.target;
       const productId = btn.dataset.id;
-      const selectedSize = document.querySelector('.size-option.selected');
-      
-      if (!selectedSize) {
-        alert('Пожалуйста, выберите размер');
-        return;
-      }
-      
-      addToCart(productId, selectedSize.dataset.size);
+          const selSize  = document.querySelector('.size-option.selected');
+          const selColor = document.querySelector('.color-option.selected');
+          if (!selSize||!selColor) {
+            alert('Выберите размер и цвет');
+            return;
+          }
+          addToCart(
+            productId,
+            selSize.dataset.size,
+            selColor.dataset.color
+          );
       elements.cartDrawer.classList.add('active');
       renderCart();
       elements.productModal.classList.remove('active');
+    }
+
+    // выбор цвета
+    if (e.target.classList.contains('color-option')) {
+      document.querySelectorAll('.color-option')
+        .forEach(o=>o.classList.remove('selected'));
+      e.target.classList.add('selected');
     }
     
     // Управление количеством в корзине

@@ -1132,3 +1132,39 @@ ul {
       font-size: 12px;
     }
   }
+
+
+  /* Блок «Цвета» в модалке */
+.modal-colors {
+    margin-bottom: 24px;
+  }
+  
+  .modal-colors h4 {
+    margin-bottom: 12px;
+    font-size: 18px;
+  }
+  
+  /* Контейнер кнопок-цветов */
+  .color-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  
+  /* Сам элемент-цвет */
+  .color-option {
+    padding: 8px 16px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: var(--transition);
+    user-select: none;
+  }
+  
+  /* Hover и выбранный цвет */
+  .color-option:hover,
+  .color-option.selected {
+    background-color: var(--accent-pink);
+    border-color: var(--accent-pink);
+    color: var(--text-dark);
+  }
