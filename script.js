@@ -500,7 +500,7 @@ function renderProductModal(productId) {
       <div class="modal-sizes">
         <h4>Размеры:</h4>
         <div class="size-options">
-          ${['XS', 'XXS', 'S', 'M', 'L', 'XL'].map(size => `
+          ${['0-3 мес', '3-6 мес', '6-9 мес'].map(size => `
             <div class="size-option" data-size="${size}">${size}</div>
           `).join('')}
         </div>
