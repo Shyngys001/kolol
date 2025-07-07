@@ -369,7 +369,7 @@ function toggleFavorite(productId) {
 function checkout() {
   if (state.cart.length === 0) return;
 
-  const phone = '77479894879';
+  const phone = '77020072268';
   let text = '*🛒 Новый заказ с MonnaRosa.kz*\n\n';
   text += 'Здравствуйте! Выгодно оформлю заказ по следующим позициям:\n\n';
 
@@ -378,6 +378,7 @@ function checkout() {
     text += `   Размер: _${item.size}_\n`;
     text += `   Кол-во: *${item.quantity}* шт.\n`;
     text += `   Цена: *${item.price.toLocaleString()} ₸*\n\n`;
+    text += `   Цвет: *${item.color.toLocaleString()} ₸*\n\n`;
   });
 
   const total = state.cart
@@ -835,6 +836,6 @@ document
       text += `*Телефон:* ${encodeURIComponent(phone)}%0A`;
       if (message) text += `%0A*Сообщение:* %0A${encodeURIComponent(message)}%0A`;
 
-      const phoneTo = '77479894879';
+      const phoneTo = '77020072268';
       window.open(`https://wa.me/${phoneTo}?text=${text}`, '_blank');
     });
