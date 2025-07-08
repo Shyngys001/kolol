@@ -11,7 +11,9 @@ const state = {
   currentProduct: null,
   searchTerm: '',
   currentPage: 1,
-  itemsPerPage: 6
+  itemsPerPage: 6,
+  filterColor: '',
+  filterSize: ''
 };
 
 // Ссылки на DOM-элементы
@@ -126,6 +128,33 @@ async function fetchData() {
   return true;
 }
 
+
+function populateExtraFilters() {
+  // собираем все уникальные цвета и размеры
+  const allColors = new Set();
+  const allSizes  = new Set();
+  state.products.forEach(p => {
+    p.colors.forEach(c => allColors.add(c));
+    p.sizes .forEach(s => allSizes.add(s));
+  });
+
+  // наполняем select#color-filter
+  const cf = document.getElementById('color-filter');
+  allColors.forEach(c => {
+    const opt = document.createElement('option');
+    opt.value = c; opt.textContent = c;
+    cf.appendChild(opt);
+  });
+
+  // наполняем select#size-filter
+  const sf = document.getElementById('size-filter');
+  allSizes.forEach(s => {
+    const opt = document.createElement('option');
+    opt.value = s; opt.textContent = s;
+    sf.appendChild(opt);
+  });
+}
+
 // Рендерим категории на главной странице
 function renderCategories() {
   if (!state.categories.length || !elements.categoriesContainer) return;
@@ -221,6 +250,14 @@ function renderProducts() {
     });
   }
 
+
+  if (state.filterColor) {
+    items = items.filter(p => p.colors.includes(state.filterColor));
+  }
+  if (state.filterSize) {
+    items = items.filter(p => p.sizes.includes(state.filterSize));
+  }
+
   // Рассчитываем пагинацию
   const totalItems = items.length;
   const totalPages = Math.ceil(totalItems / state.itemsPerPage);
@@ -284,8 +321,12 @@ function getCategoryName(id) {
     elements.productsContainer.appendChild(card);
   });
 
+
+
   // Рендерим пагинацию
   renderPagination(totalPages);
+
+
 }
 
 // Заполняем выпадающий список категорий
@@ -776,6 +817,18 @@ function setupEventListeners() {
       addToCart(id);
     }
   });
+
+  document.getElementById('color-filter').addEventListener('change', e => {
+    state.filterColor = e.target.value;
+    state.currentPage = 1;
+    renderProducts();
+  });
+  document.getElementById('size-filter').addEventListener('change', e => {
+    state.filterSize = e.target.value;
+    state.currentPage = 1;
+    renderProducts();
+  });
+  
 }
 
 // Инициализация приложения
@@ -812,6 +865,7 @@ async function init() {
       elements.categoriesContainer.innerHTML = '';
       
       populateCategoryFilter();
+      populateExtraFilters();
       renderProducts();
     } else {
       renderCategories();

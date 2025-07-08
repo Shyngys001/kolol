@@ -1250,3 +1250,65 @@ ul {
       padding: 2px 8px;
     }
   }
+/* Обновлённые стили фильтров в каталоге */
+.filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+    justify-content: center;   /* <-- центрируем */
+    margin-bottom: 24px;
+  }
+  
+  /* остальной код без изменений */
+  .filters select,
+  .filters input[type="number"] {
+    padding: 8px 12px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background: #fff;
+    min-width: 140px;
+    transition: var(--transition);
+  }
+  
+  .filters select:focus,
+  .filters input[type="number"]:focus {
+    border-color: var(--accent-pink);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(237, 159, 176, 0.4);
+  }
+  
+  .filter-group {
+    display: flex;
+    gap: 8px;
+  }
+  
+  /* Адаптация под узкие экраны */
+  @media (max-width: 768px) {
+    .filters {
+      gap: 8px;
+      justify-content: center;
+    }
+    .filter-group {
+      width: 100%;
+      justify-content: space-between;
+    }
+    .filters select,
+    .filters input[type="number"] {
+      flex: 1 1 45%;
+      min-width: 0;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .filters {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 8px;
+    }
+    .filters select,
+    .filters input[type="number"] {
+      width: 100%;
+    }
+  }
