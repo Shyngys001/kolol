@@ -1210,3 +1210,43 @@ ul {
     color: #fff;
     border-color: var(--accent-pink);
   }
+
+  /* ------------------------------------- */
+/* Адаптация .product-category, .product-sizes и .product-colors для планшетов и мобильных */
+/* ------------------------------------- */
+
+/* Планшеты и небольшие десктопы */
+@media (max-width: 1024px) {
+    .product-category {
+      font-size: 0.6875rem;      /* было 0.75rem */
+      margin: 0 12px 6px;        /* чуть меньше боковых и нижнего отступа */
+    }
+    .product-sizes,
+    .product-colors {
+      gap: 6px;                  /* менее крупные отступы между «пиллами» */
+      margin: 0 12px 12px;
+    }
+    .size-tag,
+    .color-tag {
+      font-size: 0.6875rem;      /* чуть мелче */
+      padding: 3px 10px;         /* уменьшена внутренняя «прослойка» */
+    }
+  }
+  
+  /* Смартфоны */
+  @media (max-width: 768px) {
+    .product-category {
+      font-size: 0.625rem;       /* ещё чуть меньше */
+      margin: 0 8px 4px;
+    }
+    .product-sizes,
+    .product-colors {
+      gap: 4px;
+      margin: 0 8px 8px;
+    }
+    .size-tag,
+    .color-tag {
+      font-size: 0.625rem;
+      padding: 2px 8px;
+    }
+  }
