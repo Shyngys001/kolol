@@ -832,8 +832,9 @@ function setupEventListeners() {
 }
 
 // Инициализация приложения
+// Инициализация приложения
 async function init() {
-  // Показать индикатор загрузки
+  // 1) Показываем спиннеры, пока грузятся данные
   if (elements.categoriesContainer) {
     elements.categoriesContainer.innerHTML = `
       <div class="data-placeholder">
@@ -842,7 +843,6 @@ async function init() {
       </div>
     `;
   }
-  
   if (elements.productsContainer) {
     elements.productsContainer.innerHTML = `
       <div class="data-placeholder">
@@ -851,27 +851,12 @@ async function init() {
       </div>
     `;
   }
-  
-  // Загрузка данных
+
+  // 2) Загружаем данные из Google Sheets
   const success = await fetchData();
-  
-  if (success) {
-    updateCartCount();
-    updateFavoritesCount();
-    setupEventListeners();
-    
-    if (isCatalogPage) {
-      // убираем спиннер из categoriesContainer
-      elements.categoriesContainer.innerHTML = '';
-      
-      populateCategoryFilter();
-      populateExtraFilters();
-      renderProducts();
-    } else {
-      renderCategories();
-    }
-  } else {
-    // Показать сообщение об ошибке
+
+  if (!success) {
+    // Если не удалось — показываем ошибку в обоих контейнерах
     const errorHTML = `
       <div class="data-placeholder">
         <i class="fas fa-exclamation-triangle"></i>
@@ -879,18 +864,34 @@ async function init() {
         <button class="btn-primary" onclick="location.reload()">Повторить попытку</button>
       </div>
     `;
-    
-    if (elements.categoriesContainer) {
-      elements.categoriesContainer.innerHTML = errorHTML;
-    }
-    
-    if (elements.productsContainer) {
-      elements.productsContainer.innerHTML = errorHTML;
-    }
+    elements.categoriesContainer?.innerHTML = errorHTML;
+    elements.productsContainer  ?.innerHTML = errorHTML;
+    return;
+  }
+
+  // 3) Убираем спиннеры, обновляем счётчики и навешиваем события
+  elements.categoriesContainer?.innerHTML = '';
+  elements.productsContainer  ?.innerHTML = '';
+  updateCartCount();
+  updateFavoritesCount();
+  setupEventListeners();
+
+  // 4) Если на странице каталога (есть фильтр категорий)…
+  if (elements.categoryFilter) {
+    // ── удаляем блок с категориями из index.html, чтобы не дублировался
+    document.getElementById('categories')?.remove();
+
+    // ── заполняем фильтры и рендерим товары
+    populateCategoryFilter();
+    populateExtraFilters();
+    renderProducts();
+  } else {
+    // 5) Иначе — главная страница, показываем только категории
+    renderCategories();
   }
 }
 
-// Запуск приложения
+// Запуск приложения после загрузки DOM
 document.addEventListener('DOMContentLoaded', init);
 
 
