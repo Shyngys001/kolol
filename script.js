@@ -234,10 +234,20 @@ function renderProducts() {
     renderPagination(totalPages);
     return;
   }
+
+  // helper: получить имя категории по её id
+function getCategoryName(id) {
+  const cat = state.categories.find(c => c.id === id);
+  return cat ? cat.name : '';
+}
   
   // Рендер товаров (ТОЛЬКО ДЛЯ ТЕКУЩЕЙ СТРАНИЦЫ)
   itemsToRender.forEach(p => {
     const isFav = state.favorites.includes(p.id);
+    // достаём имя категории, HTML для размеров и цветов
+    const categoryName = getCategoryName(p.category_id);
+    const sizesHTML    = p.sizes.map(s => `<span class="size-tag">${s}</span>`).join('');
+    const colorsHTML   = p.colors.map(c=> `<span class="color-tag">${c}</span>`).join('');
     const card = document.createElement('div');
     card.className = 'product-card';
     card.innerHTML = `
@@ -246,12 +256,24 @@ function renderProducts() {
         ${p.old_price ? `<div class="sale-badge">-${Math.round((1 - p.price/p.old_price)*100)}%</div>` : ''}
       </div>
       <div class="product-details">
+        <!-- НАЗВАНИЕ КАТЕГОРИИ -->
+        <div class="product-category">${categoryName}</div>
         <h3>${p.name}</h3>
         <div class="product-price">
           ${p.old_price ? `<span class="old-price">${p.old_price} ₸</span>` : ''}
           <span class="current-price">${p.price} ₸</span>
         </div>
       </div>
+      <!-- СПИСОК РАЗМЕРОВ -->
+      ${ p.sizes.length 
+        ? `<div class="product-sizes">${sizesHTML}</div>`
+        : ``
+      }
+      <!-- СПИСОК ЦВЕТОВ -->
+      ${ p.colors.length
+        ? `<div class="product-colors">${colorsHTML}</div>`
+        : ``
+      }
       <div class="product-actions">
         <button class="heart-btn ${isFav ? 'active' : ''}" data-id="${p.id}">
           <i class="${isFav ? 'fas' : 'far'} fa-heart"></i>

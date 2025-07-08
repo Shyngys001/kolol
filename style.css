@@ -1168,3 +1168,45 @@ ul {
     border-color: var(--accent-pink);
     color: var(--text-dark);
   }
+
+  /* категория */
+.product-category {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--accent-pink);
+    text-transform: uppercase;
+    margin: 0 16px 8px;
+    letter-spacing: 0.05em;
+  }
+  
+  /* контейнеры размеров и цветов */
+  .product-sizes,
+  .product-colors {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 0 16px 16px;
+  }
+  
+  /* общий стиль тегов */
+  .size-tag,
+  .color-tag {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--text-dark);
+    background-color: var(--secondary-bg);
+    border: 1px solid var(--accent-pink);
+    border-radius: 999px;
+    padding: 4px 12px;
+    transition: var(--transition);
+    cursor: default;
+  }
+  
+  /* hover-эффект */
+  .size-tag:hover,
+  .color-tag:hover {
+    background-color: var(--accent-pink);
+    color: #fff;
+    border-color: var(--accent-pink);
+  }
