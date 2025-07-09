@@ -11,9 +11,7 @@ const state = {
   currentProduct: null,
   searchTerm: '',
   currentPage: 1,
-  itemsPerPage: 6,
-  filterColor: '',
-  filterSize: ''
+  itemsPerPage: 6
 };
 
 // Ссылки на DOM-элементы
@@ -128,33 +126,6 @@ async function fetchData() {
   return true;
 }
 
-
-function populateExtraFilters() {
-  // собираем все уникальные цвета и размеры
-  const allColors = new Set();
-  const allSizes  = new Set();
-  state.products.forEach(p => {
-    p.colors.forEach(c => allColors.add(c));
-    p.sizes .forEach(s => allSizes.add(s));
-  });
-
-  // наполняем select#color-filter
-  const cf = document.getElementById('color-filter');
-  allColors.forEach(c => {
-    const opt = document.createElement('option');
-    opt.value = c; opt.textContent = c;
-    cf.appendChild(opt);
-  });
-
-  // наполняем select#size-filter
-  const sf = document.getElementById('size-filter');
-  allSizes.forEach(s => {
-    const opt = document.createElement('option');
-    opt.value = s; opt.textContent = s;
-    sf.appendChild(opt);
-  });
-}
-
 // Рендерим категории на главной странице
 function renderCategories() {
   if (!state.categories.length || !elements.categoriesContainer) return;
@@ -250,14 +221,6 @@ function renderProducts() {
     });
   }
 
-
-  if (state.filterColor) {
-    items = items.filter(p => p.colors.includes(state.filterColor));
-  }
-  if (state.filterSize) {
-    items = items.filter(p => p.sizes.includes(state.filterSize));
-  }
-
   // Рассчитываем пагинацию
   const totalItems = items.length;
   const totalPages = Math.ceil(totalItems / state.itemsPerPage);
@@ -321,12 +284,8 @@ function getCategoryName(id) {
     elements.productsContainer.appendChild(card);
   });
 
-
-
   // Рендерим пагинацию
   renderPagination(totalPages);
-
-
 }
 
 // Заполняем выпадающий список категорий
@@ -817,24 +776,11 @@ function setupEventListeners() {
       addToCart(id);
     }
   });
-
-  document.getElementById('color-filter').addEventListener('change', e => {
-    state.filterColor = e.target.value;
-    state.currentPage = 1;
-    renderProducts();
-  });
-  document.getElementById('size-filter').addEventListener('change', e => {
-    state.filterSize = e.target.value;
-    state.currentPage = 1;
-    renderProducts();
-  });
-  
 }
 
 // Инициализация приложения
-// Инициализация приложения
 async function init() {
-  // 1) Показываем спиннеры, пока грузятся данные
+  // Показать индикатор загрузки
   if (elements.categoriesContainer) {
     elements.categoriesContainer.innerHTML = `
       <div class="data-placeholder">
@@ -843,6 +789,7 @@ async function init() {
       </div>
     `;
   }
+  
   if (elements.productsContainer) {
     elements.productsContainer.innerHTML = `
       <div class="data-placeholder">
@@ -851,12 +798,26 @@ async function init() {
       </div>
     `;
   }
-
-  // 2) Загружаем данные из Google Sheets
+  
+  // Загрузка данных
   const success = await fetchData();
-
-  if (!success) {
-    // Если не удалось — показываем ошибку в обоих контейнерах
+  
+  if (success) {
+    updateCartCount();
+    updateFavoritesCount();
+    setupEventListeners();
+    
+    if (isCatalogPage) {
+      // убираем спиннер из categoriesContainer
+      elements.categoriesContainer.innerHTML = '';
+      
+      populateCategoryFilter();
+      renderProducts();
+    } else {
+      renderCategories();
+    }
+  } else {
+    // Показать сообщение об ошибке
     const errorHTML = `
       <div class="data-placeholder">
         <i class="fas fa-exclamation-triangle"></i>
@@ -864,34 +825,19 @@ async function init() {
         <button class="btn-primary" onclick="location.reload()">Повторить попытку</button>
       </div>
     `;
-    elements.categoriesContainer?.innerHTML = errorHTML;
-    elements.productsContainer  ?.innerHTML = errorHTML;
-    return;
-  }
-
-  // 3) Убираем спиннеры, обновляем счётчики и навешиваем события
-  elements.categoriesContainer?.innerHTML = '';
-  elements.productsContainer  ?.innerHTML = '';
-  updateCartCount();
-  updateFavoritesCount();
-  setupEventListeners();
-
-  // 4) Если на странице каталога (есть фильтр категорий)…
-  if (elements.categoryFilter) {
-    // ── удаляем блок с категориями из index.html, чтобы не дублировался
-    document.getElementById('categories')?.remove();
-
-    // ── заполняем фильтры и рендерим товары
-    populateCategoryFilter();
-    populateExtraFilters();
-    renderProducts();
-  } else {
-    // 5) Иначе — главная страница, показываем только категории
-    renderCategories();
+    
+    if (elements.categoriesContainer) {
+      elements.categoriesContainer.innerHTML = errorHTML;
+    }
+    
+    if (elements.productsContainer) {
+      elements.productsContainer.innerHTML = errorHTML;
+    }
   }
 }
 
-// Запуск приложения после загрузки DOM
+
+// Запуск приложения
 document.addEventListener('DOMContentLoaded', init);
 
 
@@ -912,3 +858,7 @@ document
       const phoneTo = '77020072268';
       window.open(`https://wa.me/${phoneTo}?text=${text}`, '_blank');
     });
+
+
+
+    
