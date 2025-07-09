@@ -49,18 +49,26 @@
     <div class="container">
       <h2>Каталог товаров</h2>
 
-      <!-- фильтры -->
-      <div class="filters">
+    <!-- фильтры -->
+    <div class="filters">
+      <div class="filter-group">
         <select id="category-filter">
           <option value="all">Все категории</option>
         </select>
-        <select id="sort">
-          <option value="default">По умолчанию</option>
-          <option value="price-asc">Цена: по возрастанию</option>
-          <option value="price-desc">Цена: по убыванию</option>
-          <option value="sale">Скидки</option>
+        <select id="color-filter">
+          <option value="">Все цвета</option>
+        </select>
+        <select id="size-filter">
+          <option value="">Все размеры</option>
         </select>
       </div>
+      <select id="sort">
+        <option value="default">По умолчанию</option>
+        <option value="price-asc">Цена: по возрастанию</option>
+        <option value="price-desc">Цена: по убыванию</option>
+        <option value="sale">Скидки</option>
+      </select>
+    </div>
 
       <!-- категории (карусель/тайлы) -->
       <div id="categories-container" class="categories-grid"></div>

@@ -221,6 +221,15 @@ function renderProducts() {
     });
   }
 
+
+  // внутри renderProducts(), сразу после сортировки:
+  if (state.filterColor) {
+    items = items.filter(p => p.colors.includes(state.filterColor));
+  }
+  if (state.filterSize) {
+    items = items.filter(p => p.sizes.includes(state.filterSize));
+  }
+
   // Рассчитываем пагинацию
   const totalItems = items.length;
   const totalPages = Math.ceil(totalItems / state.itemsPerPage);
@@ -557,6 +566,30 @@ function renderProductModal(productId) {
   elements.productModal.classList.add('active');
 }
 
+// Заполняем selects всеми цветами и размерами
+function populateExtraFilters() {
+  const allColors = new Set();
+  const allSizes  = new Set();
+  state.products.forEach(p => {
+    p.colors.forEach(c => allColors.add(c));
+    p.sizes .forEach(s => allSizes .add(s));
+  });
+
+  const cf = document.getElementById('color-filter');
+  allColors.forEach(c => {
+    const opt = document.createElement('option');
+    opt.value = c; opt.textContent = c;
+    cf.appendChild(opt);
+  });
+
+  const sf = document.getElementById('size-filter');
+  allSizes.forEach(s => {
+    const opt = document.createElement('option');
+    opt.value = s; opt.textContent = s;
+    sf.appendChild(opt);
+  });
+}
+
 // Настройка обработчиков событий
 function setupEventListeners() {
   // Открытие корзины
@@ -564,6 +597,24 @@ function setupEventListeners() {
     elements.cartBtn.addEventListener('click', () => {
       elements.cartDrawer.classList.add('active');
       renderCart();
+    });
+  }
+
+  const colorFilter = document.getElementById('color-filter');
+  if (colorFilter) {
+    colorFilter.addEventListener('change', e => {
+      state.filterColor = e.target.value;
+      state.currentPage = 1;
+      renderProducts();
+    });
+  }
+
+  const sizeFilter = document.getElementById('size-filter');
+  if (sizeFilter) {
+    sizeFilter.addEventListener('change', e => {
+      state.filterSize = e.target.value;
+      state.currentPage = 1;
+      renderProducts();
     });
   }
   
@@ -778,64 +829,72 @@ function setupEventListeners() {
   });
 }
 
-// Инициализация приложения
 async function init() {
-  // Показать индикатор загрузки
-  if (elements.categoriesContainer) {
-    elements.categoriesContainer.innerHTML = `
-      <div class="data-placeholder">
-        <div class="loading-spinner"></div>
-        <p>Загрузка данных...</p>
-      </div>
-    `;
-  }
-  
-  if (elements.productsContainer) {
-    elements.productsContainer.innerHTML = `
-      <div class="data-placeholder">
-        <div class="loading-spinner"></div>
-        <p>Загрузка данных...</p>
-      </div>
-    `;
-  }
-  
-  // Загрузка данных
-  const success = await fetchData();
-  
-  if (success) {
-    updateCartCount();
-    updateFavoritesCount();
-    setupEventListeners();
-    
-    if (isCatalogPage) {
-      // убираем спиннер из categoriesContainer
-      elements.categoriesContainer.innerHTML = '';
-      
-      populateCategoryFilter();
-      renderProducts();
-    } else {
-      renderCategories();
+  // 1) Показываем спиннер там, где нужно
+  if (!isCatalogPage) {
+    if (elements.categoriesContainer) {
+      elements.categoriesContainer.innerHTML = `
+        <div class="data-placeholder">
+          <div class="loading-spinner"></div>
+          <p>Загрузка категорий...</p>
+        </div>`;
     }
   } else {
-    // Показать сообщение об ошибке
+    if (elements.productsContainer) {
+      elements.productsContainer.innerHTML = `
+        <div class="data-placeholder">
+          <div class="loading-spinner"></div>
+          <p>Загрузка товаров...</p>
+        </div>`;
+    }
+    // на catalog.html блок с категориями нам не нужен
+    if (elements.categoriesContainer) {
+      elements.categoriesContainer.style.display = 'none';
+    }
+  }
+
+  // 2) Фактически грузим все данные
+  const success = await fetchData();
+
+  // 3) При ошибке показываем единый «retry»-блок и выходим
+  if (!success) {
     const errorHTML = `
       <div class="data-placeholder">
         <i class="fas fa-exclamation-triangle"></i>
         <p>Ошибка загрузки данных</p>
         <button class="btn-primary" onclick="location.reload()">Повторить попытку</button>
-      </div>
-    `;
-    
-    if (elements.categoriesContainer) {
+      </div>`;
+    if (!isCatalogPage && elements.categoriesContainer) {
       elements.categoriesContainer.innerHTML = errorHTML;
     }
-    
-    if (elements.productsContainer) {
+    if (isCatalogPage && elements.productsContainer) {
       elements.productsContainer.innerHTML = errorHTML;
     }
+    return;
+  }
+
+  // 4) Данные пришли — обновляем корзину/избранное и вешаем все обработчики
+  updateCartCount();
+  updateFavoritesCount();
+  setupEventListeners();
+
+  // 5) Рендерим нужный контент
+  if (!isCatalogPage) {
+    // главная страница
+    if (elements.categoriesContainer) {
+      elements.categoriesContainer.innerHTML = '';
+      renderCategories();
+    }
+  } else {
+    // каталог
+    if (elements.productsContainer) {
+      elements.productsContainer.innerHTML = '';
+    }
+    populateCategoryFilter();
+    populateExtraFilters();
+    renderProducts();
   }
 }
-
 
 // Запуск приложения
 document.addEventListener('DOMContentLoaded', init);
