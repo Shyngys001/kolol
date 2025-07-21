@@ -710,7 +710,7 @@ ul {
 .cart-drawer {
     position: fixed;
     top: 0;
-    right: -400px;
+    right: -800px;
     width: 100%;
     max-width: 400px;
     height: 100%;
